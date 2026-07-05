@@ -42,7 +42,7 @@ CloudFront, ECR, CloudWatch, IAM, ACM). *Demonstrates secure-by-design delivery 
 infrastructure: httpOnly-cookie JWT with refresh-token rotation, TOTP two-factor auth, RBAC, Stripe,
 Docker, and GitHub OIDC.*
 
-### 🧠 JS Academy — JavaScript learning platform · *In active development*
+### 🧠 JS Academy — JavaScript learning platform · *Built · not yet deployed*
 A learning platform built around a custom **generator-based execution visualiser** (call stack,
 scopes/closures, heap, and a data-structures view with a live complexity meter) on the Acorn parser,
 plus a tiered curriculum and an AI-powered interview coach. *Demonstrates language tooling, interpreter
@@ -54,12 +54,14 @@ web store and an Expo/React Native app, with a shared Zod-validation and integer
 the clients can't drift from the API. *Demonstrates a transactional, oversell-safe checkout, idempotent
 Stripe webhooks, and refresh-token families with reuse detection.*
 
-### 🏨 [Hotel Management & Booking Platform](https://mirotadej.ie) · Live case study
+### 🏨 Hotel Management & Booking Platform · *Built · not yet deployed* · [case study](https://mirotadej.ie)
 A commission-free direct-booking and hotel-operations platform built on raw parameterised SQL.
 *Demonstrates database-level concurrency safety — a PostgreSQL `EXCLUDE` constraint makes overlapping
 bookings physically impossible — plus multi-property RBAC and idempotent Stripe refunds.*
 
-> App repositories are private — available on request. Live links above are publicly accessible.
+> **Verity Digital** is live at [veritydigital.ie](https://veritydigital.ie). The e-commerce, hotel,
+> and JS Academy apps are fully built but not yet publicly deployed. App repositories are private —
+> available on request.
 
 ---
 

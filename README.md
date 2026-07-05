@@ -1,13 +1,15 @@
 # Miroslav Tadej
 
-### Full-Stack Developer (PERN) · Secure-by-Design Web & Mobile · Dublin, Ireland
+### Full Stack Software Engineer · React · Node.js · PostgreSQL · AWS · Dublin, Ireland
 
-Full-stack developer based in Dublin, building secure web and mobile applications on the PERN
-stack (PostgreSQL · Express · React · Node) — with security designed in from the first commit, not
-bolted on after. I came to software engineering and cybersecurity from a prior career in sales
-management and training, and I pair hands-on building with a postgraduate cybersecurity background.
+I build secure full-stack web applications on the PERN stack (PostgreSQL · Express · React · Node.js)
+and ship them to production — with security designed in from the first commit, not bolted on after.
+My consultancy platform is **live at [veritydigital.ie](https://veritydigital.ie)**, deployed to AWS
+through a GitHub Actions CI/CD pipeline I built end to end. I came to software engineering from a prior
+career in sales management and training, and I pair hands-on building with a postgraduate cybersecurity
+background.
 
-**🟢 Open to full-stack developer roles in Ireland.**
+**🟢 Open to Full Stack / Software Engineer roles in Ireland.**
 
 ---
 
@@ -26,43 +28,61 @@ management and training, and I pair hands-on building with a postgraduate cybers
 ![AWS](https://img.shields.io/badge/AWS-232F3E?style=flat&logo=amazonwebservices&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/CI%2FCD-2088FF?style=flat&logo=githubactions&logoColor=white)
 
-**Focus areas:** secure-by-design architecture · OWASP Top 10 awareness · JWT authentication ·
-role-based access control · parameterised SQL · GDPR-aware builds.
+**Focus areas:** secure-by-design architecture · OWASP-aware practices · JWT authentication ·
+role-based access control · refresh-token rotation · parameterised SQL · GDPR-aware builds.
 
 ---
 
 ## 🚀 Featured Projects
 
-### 🛒 [E-commerce Platform](https://github.com/MiroTadej/ecommerce-web-app) — web + mobile + shared core
-An Amazon-style commerce engine in an npm-workspaces monorepo: one Express + Prisma API behind a
-React web store and an Expo/React Native app, with a shared Zod-validation and integer-cents money
-package so the clients can't drift from the API. *Demonstrates a transactional, oversell-safe
-checkout, idempotent Stripe webhooks, and fail-closed admin permissions.*
+### 🔐 [Verity Digital — Consultancy Platform](https://veritydigital.ie) · **Live**
+A production PERN platform combining a public marketing site, an authenticated client portal, and an
+admin back-office — deployed to AWS via a keyless, gated CI/CD pipeline (Elastic Beanstalk, RDS, S3,
+CloudFront, ECR, CloudWatch, IAM, ACM). *Demonstrates secure-by-design delivery from commit to live
+infrastructure: httpOnly-cookie JWT with refresh-token rotation, TOTP two-factor auth, RBAC, Stripe,
+Docker, and GitHub OIDC.*
 
-### 🏨 [Hotel Management & Booking Platform](https://github.com/MiroTadej/hotel-management-web-app) — PERN, double-booking-proof
-A direct-booking and hotel-operations platform built on raw parameterised SQL. *Demonstrates
-database-level concurrency safety — a PostgreSQL `EXCLUDE` constraint makes overlapping bookings
-physically impossible — plus multi-property RBAC and idempotent Stripe auto-refunds.*
+### 🧠 JS Academy — JavaScript learning platform · *In active development*
+A learning platform built around a custom **generator-based execution visualiser** (call stack,
+scopes/closures, heap, and a data-structures view with a live complexity meter) on the Acorn parser,
+plus a tiered curriculum and an AI-powered interview coach. *Demonstrates language tooling, interpreter
+design, and sandboxed code execution.*
 
-### 🔐 [Consultancy Platform](https://github.com/MiroTadej/consultancy-web-app) — secure client portal & back-office
-A PERN platform combining a marketing site, an authenticated client portal and an admin
-back-office. *Demonstrates secure-by-design full-stack delivery: httpOnly-cookie JWT with
-refresh-token rotation, TOTP two-factor auth, three-axis file-upload validation, and Docker + CI.*
+### 🛒 E-commerce Platform — web + mobile + shared core
+An Amazon-style commerce engine in an npm-workspaces monorepo: one Express + Prisma API behind a React
+web store and an Expo/React Native app, with a shared Zod-validation and integer-cents money package so
+the clients can't drift from the API. *Demonstrates a transactional, oversell-safe checkout, idempotent
+Stripe webhooks, and refresh-token families with reuse detection.*
 
-> Repositories are currently private — available on request.
+### 🏨 [Hotel Management & Booking Platform](https://mirotadej.ie) · Live case study
+A commission-free direct-booking and hotel-operations platform built on raw parameterised SQL.
+*Demonstrates database-level concurrency safety — a PostgreSQL `EXCLUDE` constraint makes overlapping
+bookings physically impossible — plus multi-property RBAC and idempotent Stripe refunds.*
+
+> App repositories are private — available on request. Live links above are publicly accessible.
 
 ---
 
-## 🎓 Credentials
+## 🎓 Education
 
-- **PG Diploma in Cybersecurity** — NFQ Level 9, National College of Ireland (2026)
-- **Higher Diploma in Computing** — NFQ Level 8, National College of Ireland (2024)
-- **PRINCE2 · MSP · PMI** — project & programme delivery
-- **BCom (Hons) Business Management** — University of South Africa (UNISA)
+- **Postgraduate Diploma in Science in Cybersecurity** — NFQ Level 9, National College of Ireland, Dublin (2026)
+- **Higher Diploma in Science in Computing (Web Development)** — NFQ Level 8, National College of Ireland, Dublin (2024)
+- **Bachelor of Commerce (Hons) in Business Management** — University of South Africa (2015)
+- **Bachelor of Commerce in Management** — University of South Africa (2012)
+
+## 📜 Certifications
+
+- **Computer Science and Python Programming** — Massachusetts Institute of Technology (MITx)
+- **PRINCE2** — APMG
+- **Managing Successful Programmes (MSP)** — APMG
+- **Project Management** — University of South Africa
+- **Project Management** — University of the Witwatersrand
+- **Occupationally Directed Education, Training & Development Practices** — ETDP SETA
 
 ---
 
 ## 📫 Contact
 
+- **Portfolio:** [veritydigital.ie](https://veritydigital.ie)
 - **LinkedIn:** [linkedin.com/in/miroslavtadej](https://www.linkedin.com/in/miroslavtadej)
 - **Email:** mirotadej@gmail.com

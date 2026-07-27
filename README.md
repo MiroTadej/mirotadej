@@ -35,33 +35,50 @@ role-based access control · refresh-token rotation · parameterised SQL · GDPR
 
 ## 🚀 Featured Projects
 
+| Project | Status | Stack | What it proves |
+| --- | --- | --- | --- |
+| **[Verity Digital](https://veritydigital.ie/case-studies/consultancy-platform)** | 🟢 **Live** | PERN · AWS · Docker | Secure delivery from commit to production infrastructure |
+| **[JS Academy](https://veritydigital.ie/case-studies/js-academy)** | Built | PERN · TypeScript · Acorn | Interpreter design and safely running untrusted code |
+| **[Shopora Commerce](https://veritydigital.ie/case-studies/ecommerce-engine)** | Built | Monorepo · Prisma · Expo | One API, two clients, no contract drift |
+| **[Grand Stay Hotel](https://veritydigital.ie/case-studies/hotel-booking-platform)** | Built | PERN · raw SQL | Correctness under concurrency, enforced by the database |
+
 ### 🔐 [Verity Digital — Consultancy Platform](https://veritydigital.ie) · **Live**
 A production PERN platform combining a public marketing site, an authenticated client portal, and an
 admin back-office — deployed to AWS via a keyless, gated CI/CD pipeline (Elastic Beanstalk, RDS, S3,
 CloudFront, ECR, CloudWatch, IAM, ACM). *Demonstrates secure-by-design delivery from commit to live
 infrastructure: httpOnly-cookie JWT with refresh-token rotation, TOTP two-factor auth, RBAC, Stripe,
 Docker, and GitHub OIDC.*
+**[Read the case study →](https://veritydigital.ie/case-studies/consultancy-platform)**
 
 ### 🧠 JS Academy — JavaScript learning platform · *Built · not yet deployed*
 A learning platform built around a custom **generator-based execution visualiser** (call stack,
 scopes/closures, heap, and a data-structures view with a live complexity meter) on the Acorn parser,
 plus a tiered curriculum and an AI-powered interview coach. *Demonstrates language tooling, interpreter
-design, and sandboxed code execution.*
+design, and sandboxed code execution — including a critical sandbox escape I found by attacking my own
+grader, then fixed and regression-tested.*
+**[Read the case study →](https://veritydigital.ie/case-studies/js-academy)**
 
 ### 🛒 E-commerce Platform — web + mobile + shared core
 An Amazon-style commerce engine in an npm-workspaces monorepo: one Express + Prisma API behind a React
 web store and an Expo/React Native app, with a shared Zod-validation and integer-cents money package so
 the clients can't drift from the API. *Demonstrates a transactional, oversell-safe checkout, idempotent
 Stripe webhooks, and refresh-token families with reuse detection.*
+**[Read the case study →](https://veritydigital.ie/case-studies/ecommerce-engine)**
 
-### 🏨 Hotel Management & Booking Platform · *Built · not yet deployed* · [case study](https://mirotadej.ie)
+### 🏨 Hotel Management & Booking Platform · *Built · not yet deployed*
 A commission-free direct-booking and hotel-operations platform built on raw parameterised SQL.
 *Demonstrates database-level concurrency safety — a PostgreSQL `EXCLUDE` constraint makes overlapping
 bookings physically impossible — plus multi-property RBAC and idempotent Stripe refunds.*
+**[Read the case study →](https://veritydigital.ie/case-studies/hotel-booking-platform)**
 
-> **Verity Digital** is live at [veritydigital.ie](https://veritydigital.ie). The e-commerce, hotel,
-> and JS Academy apps are fully built but not yet publicly deployed. App repositories are private —
-> available on request.
+> **Why you can't see the code here.** These are proprietary products, not open-source samples, so the
+> application repositories are private. Each case study above walks through the architecture, the
+> trade-offs and the code that matters — and I'm happy to grant repository access or walk through any
+> of it live on request.
+>
+> **Status, stated honestly:** only Verity Digital is deployed at
+> [veritydigital.ie](https://veritydigital.ie). The other three are feature-complete and tested, but
+> not yet publicly hosted.
 
 ---
 

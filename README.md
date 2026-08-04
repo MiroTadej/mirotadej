@@ -41,6 +41,7 @@ role-based access control · refresh-token rotation · parameterised SQL · GDPR
 | **[JS Academy](https://veritydigital.ie/case-studies/js-academy)** | Built | PERN · TypeScript · Acorn | Interpreter design and safely running untrusted code |
 | **[Shopora Commerce](https://veritydigital.ie/case-studies/ecommerce-engine)** | Built | Monorepo · Prisma · Expo | One API, two clients, no contract drift |
 | **[Grand Stay Hotel](https://veritydigital.ie/case-studies/hotel-booking-platform)** | Built | PERN · raw SQL | Correctness under concurrency, enforced by the database |
+| **[Tender Radar](https://veritydigital.ie/case-studies/tender-radar)** | Built | PERN · TypeScript · AI | Reading the rules before writing the scraper |
 
 ### 🔐 [Verity Digital — Consultancy Platform](https://veritydigital.ie) · **Live**
 A production PERN platform combining a public marketing site, an authenticated client portal, and an
@@ -71,13 +72,25 @@ A commission-free direct-booking and hotel-operations platform built on raw para
 bookings physically impossible — plus multi-property RBAC and idempotent Stripe refunds.*
 **[Read the case study →](https://veritydigital.ie/case-studies/hotel-booking-platform)**
 
+### 📡 Verity Tender Radar — Irish public-procurement radar · *Built · internal tool*
+Ingests EU procurement notices from the TED API, scores each against a capability profile, and surfaces
+the ones worth bidding for — every one explaining in plain sentences why it surfaced. Tracks the
+qualification documents a bid needs, and drafts tender requirements with AI that a person confirms
+against the source quote. *The decision I'd point at: **eTenders is never scraped.** Its terms prohibit
+it, so those notices are entered by hand instead — materially more work, and the only version worth
+running. Reading the terms of service is part of the engineering.*
+
+![Verity Tender Radar](https://raw.githubusercontent.com/MiroTadej/mirotadej/main/screenshots/tender-radar.png)
+
+**[Read the case study →](https://veritydigital.ie/case-studies/tender-radar)**
+
 > **Why you can't see the code here.** These are proprietary products, not open-source samples, so the
 > application repositories are private. Each case study above walks through the architecture, the
 > trade-offs and the code that matters — and I'm happy to grant repository access or walk through any
 > of it live on request.
 >
 > **Status, stated honestly:** only Verity Digital is deployed at
-> [veritydigital.ie](https://veritydigital.ie). The other three are feature-complete and tested, but
+> [veritydigital.ie](https://veritydigital.ie). The other four are feature-complete and tested, but
 > not yet publicly hosted.
 
 ---

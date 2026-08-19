@@ -4,9 +4,11 @@
 
 I build secure full-stack web applications on the PERN stack (PostgreSQL · Express · React · Node.js)
 and ship them to production — with security designed in from the first commit, not bolted on after.
-My consultancy platform is **live at [veritydigital.ie](https://veritydigital.ie)**, deployed to AWS
-through a GitHub Actions CI/CD pipeline I built end to end. I came to software engineering from a prior
-career in sales management and training, and I pair hands-on building with a postgraduate cybersecurity
+**Two systems now run live on AWS**: my consultancy platform at
+[veritydigital.ie](https://veritydigital.ie), and Verity Tender Radar at `radar.veritydigital.ie`
+(authenticated, no public sign-up). Both deploy through GitHub Actions CI/CD pipelines I built end to
+end, authenticating to AWS with keyless OIDC. I came to software engineering from a prior career in
+sales management and training, and I pair hands-on building with a postgraduate cybersecurity
 background.
 
 **🟢 Open to Full Stack / Software Engineer roles in Ireland.**
@@ -29,7 +31,8 @@ background.
 ![GitHub Actions](https://img.shields.io/badge/CI%2FCD-2088FF?style=flat&logo=githubactions&logoColor=white)
 
 **Focus areas:** secure-by-design architecture · OWASP-aware practices · JWT authentication ·
-role-based access control · refresh-token rotation · parameterised SQL · GDPR-aware builds.
+role-based access control · refresh-token rotation · parameterised SQL · GDPR compliance (ROPA, DPIA,
+Art. 28) · keyless OIDC deploys · production monitoring and alerting · WCAG 2.2 AA accessibility.
 
 ---
 
@@ -38,17 +41,28 @@ role-based access control · refresh-token rotation · parameterised SQL · GDPR
 | Project | Status | Stack | What it proves |
 | --- | --- | --- | --- |
 | **[Verity Digital](https://veritydigital.ie/case-studies/consultancy-platform)** | 🟢 **Live** | PERN · AWS · Docker | Secure delivery from commit to production infrastructure |
+| **[Tender Radar](https://veritydigital.ie/case-studies/tender-radar)** | 🟢 **Live** | PERN · TypeScript · AWS · AI | Measured engineering: load, security and accessibility passes |
 | **[JS Academy](https://veritydigital.ie/case-studies/js-academy)** | Built | PERN · TypeScript · Acorn | Interpreter design and safely running untrusted code |
 | **[Shopora Commerce](https://veritydigital.ie/case-studies/ecommerce-engine)** | Built | Monorepo · Prisma · Expo | One API, two clients, no contract drift |
 | **[Grand Stay Hotel](https://veritydigital.ie/case-studies/hotel-booking-platform)** | Built | PERN · raw SQL | Correctness under concurrency, enforced by the database |
-| **[Tender Radar](https://veritydigital.ie/case-studies/tender-radar)** | Built | PERN · TypeScript · AI | Reading the rules before writing the scraper |
 
 ### 🔐 [Verity Digital — Consultancy Platform](https://veritydigital.ie) · **Live**
 A production PERN platform combining a public marketing site, an authenticated client portal, and an
 admin back-office — deployed to AWS via a keyless, gated CI/CD pipeline (Elastic Beanstalk, RDS, S3,
 CloudFront, ECR, CloudWatch, IAM, ACM). *Demonstrates secure-by-design delivery from commit to live
 infrastructure: httpOnly-cookie JWT with refresh-token rotation, TOTP two-factor auth, RBAC, Stripe,
-Docker, and GitHub OIDC.*
+Docker, and GitHub OIDC.* 57 API integration suites and 380 unit tests gate every deploy, across 48
+forward-only SQL migrations.
+
+*Recent work:* a **GDPR and Irish/EU compliance pass** — ROPA, DPIA, an Article 28 processor agreement
+as a signable document, a data-export button and a legal-hold runbook, plus retention crons that
+anonymise audit-log IPs and hard-delete stale leads. A **/trust page** answering the security
+questionnaire public buyers actually send (data location, encryption, access control, tested restores,
+monitoring) with every claim either evidenced or explicitly marked outstanding — the partial restore
+drill and absent penetration test are stated as gaps rather than glossed. Production **alerting and
+CloudWatch monitoring**, so a failure is not discovered by a client; a **Content-Security-Policy** on
+production HTML; **CloudFront origin verification**; and an accessibility fix where ten public pages
+had no `h1` at all.
 **[Read the case study →](https://veritydigital.ie/case-studies/consultancy-platform)**
 
 ### 🧠 JS Academy — JavaScript learning platform · *Built · not yet deployed*
@@ -72,13 +86,35 @@ A commission-free direct-booking and hotel-operations platform built on raw para
 bookings physically impossible — plus multi-property RBAC and idempotent Stripe refunds.*
 **[Read the case study →](https://veritydigital.ie/case-studies/hotel-booking-platform)**
 
-### 📡 Verity Tender Radar — Irish public-procurement radar · *Built · internal tool*
-Ingests EU procurement notices from the TED API, scores each against a capability profile, and surfaces
-the ones worth bidding for — every one explaining in plain sentences why it surfaced. Tracks the
-qualification documents a bid needs, and drafts tender requirements with AI that a person confirms
-against the source quote. *The decision I'd point at: **eTenders is never scraped.** Its terms prohibit
-it, so those notices are entered by hand instead — materially more work, and the only version worth
-running. Reading the terms of service is part of the engineering.*
+### 📡 Verity Tender Radar — Irish public-procurement radar · **Live**
+Ingests EU and Irish procurement notices from the live TED API, scores each against a capability
+profile, and surfaces the ones worth bidding for — every one explaining in plain sentences why it
+surfaced. Tracks the qualification documents a bid needs, and drafts tender requirements with AI that a
+person confirms against the source quote. *The decision I'd point at: **eTenders is never scraped.** Its
+terms prohibit it, so those notices are entered by hand instead — materially more work, and the only
+version worth running. Reading the terms of service is part of the engineering.*
+
+**Live at `radar.veritydigital.ie`** — authenticated, no public sign-up, so it is not a clickable demo;
+happy to walk through it. It runs as **two Elastic Beanstalk environments** — an API and a separate
+scheduled ingestion worker — on commit-tagged ECR images against a private, encrypted RDS instance,
+with secrets in SSM as SecureString, S3 archival of every raw payload before parsing, a dead-letter
+queue with replay, and a GitHub OIDC deploy role scoped so it cannot reach the sibling app's resources.
+The scheduled worker is *why* it moved to AWS: `croner` only fires while the process is alive, so a
+laptop shut at 18:00 never runs its 06:00 job.
+
+*Verified rather than asserted:* **1,898 tests** (104 files, 84.71% statement coverage) plus a
+**138-test Playwright suite** driving a real browser, a load pass at **100× a realistic corpus** with
+zero errors at 128 concurrent users, an adversarial security assessment, and a **WCAG 2.2 AA** pass —
+every finding remediated. The AI extraction eval harness caught a **1000× money-parsing defect**
+(€6.5m read as €6.5bn) that was intermittent enough to survive a spot check.
+
+*Recent work:* an **admin automation-scheduling panel** with its own save-blocker and wheel-adjustable
+window times; **CloudWatch log streaming**, which turned out never to have been enabled — every
+`logger.error` the API and worker had ever written was going to a container filesystem and being
+discarded on the next deploy; an **uptime check on a health path that actually resolves**, after
+finding that CloudFront's SPA rewrite was turning a missing `/health/ready` into a `200` and would have
+reported "up" forever; and a corrected RDS storage alarm that treated missing data as *missing* rather
+than *breaching*, so a stopped instance would have gone quiet instead of alarming.
 
 ![Verity Tender Radar](https://raw.githubusercontent.com/MiroTadej/mirotadej/main/screenshots/tender-radar.png)
 
@@ -89,9 +125,10 @@ running. Reading the terms of service is part of the engineering.*
 > trade-offs and the code that matters — and I'm happy to grant repository access or walk through any
 > of it live on request.
 >
-> **Status, stated honestly:** only Verity Digital is deployed at
-> [veritydigital.ie](https://veritydigital.ie). The other four are feature-complete and tested, but
-> not yet publicly hosted.
+> **Status, stated honestly:** two systems are deployed — Verity Digital at
+> [veritydigital.ie](https://veritydigital.ie), which is public, and Verity Tender Radar at
+> `radar.veritydigital.ie`, which is authenticated with no public sign-up, so there is nothing a
+> visitor can click into. The other three are feature-complete and tested, but not yet publicly hosted.
 
 ---
 

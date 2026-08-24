@@ -7,9 +7,10 @@ and ship them to production — with security designed in from the first commit,
 **Two systems now run live on AWS**: my consultancy platform at
 [veritydigital.ie](https://veritydigital.ie), and Verity Tender Radar at `radar.veritydigital.ie`
 (authenticated, no public sign-up). Both deploy through GitHub Actions CI/CD pipelines I built end to
-end, authenticating to AWS with keyless OIDC. I came to software engineering from a prior career in
-sales management and training, and I pair hands-on building with a postgraduate cybersecurity
-background.
+end, authenticating to AWS with keyless OIDC. I also work in **C# and .NET** — I've ported one of these
+platforms to .NET 10 on ASP.NET Core and EF Core, and proved the port by running its original React
+client against the new API unmodified. I came to software engineering from a prior career in sales
+management and training, and I pair hands-on building with a postgraduate cybersecurity background.
 
 **🟢 Open to Full Stack / Software Engineer roles in Ireland.**
 
@@ -19,6 +20,8 @@ background.
 
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
+![C#](https://img.shields.io/badge/C%23-512BD4?style=flat&logo=csharp&logoColor=white)
+![.NET](https://img.shields.io/badge/.NET-512BD4?style=flat&logo=dotnet&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white)
 ![Express](https://img.shields.io/badge/Express-000000?style=flat&logo=express&logoColor=white)
 ![React](https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=black)
@@ -31,8 +34,9 @@ background.
 ![GitHub Actions](https://img.shields.io/badge/CI%2FCD-2088FF?style=flat&logo=githubactions&logoColor=white)
 
 **Focus areas:** secure-by-design architecture · OWASP-aware practices · JWT authentication ·
-role-based access control · refresh-token rotation · parameterised SQL · GDPR compliance (ROPA, DPIA,
-Art. 28) · keyless OIDC deploys · production monitoring and alerting · WCAG 2.2 AA accessibility.
+role-based access control · refresh-token rotation · parameterised SQL · concurrency correctness
+enforced at the database · GDPR compliance (ROPA, DPIA, Art. 28) · keyless OIDC deploys · production
+monitoring and alerting · WCAG 2.2 AA accessibility.
 
 ---
 
@@ -45,14 +49,17 @@ Art. 28) · keyless OIDC deploys · production monitoring and alerting · WCAG 2
 | **[JS Academy](https://veritydigital.ie/case-studies/js-academy)** | Built | PERN · TypeScript · Acorn | Interpreter design and safely running untrusted code |
 | **[Shopora Commerce](https://veritydigital.ie/case-studies/ecommerce-engine)** | Built | Monorepo · Prisma · Expo | One API, two clients, no contract drift |
 | **[Grand Stay Hotel](https://veritydigital.ie/case-studies/hotel-booking-platform)** | Built | PERN · raw SQL | Correctness under concurrency, enforced by the database |
+| **GrandStay.NET** | Built | C# · .NET 10 · EF Core | The same guarantees, rebuilt on a second stack and proved |
 
 ### 🔐 [Verity Digital — Consultancy Platform](https://veritydigital.ie) · **Live**
 A production PERN platform combining a public marketing site, an authenticated client portal, and an
 admin back-office — deployed to AWS via a keyless, gated CI/CD pipeline (Elastic Beanstalk, RDS, S3,
 CloudFront, ECR, CloudWatch, IAM, ACM). *Demonstrates secure-by-design delivery from commit to live
 infrastructure: httpOnly-cookie JWT with refresh-token rotation, TOTP two-factor auth, RBAC, Stripe,
-Docker, and GitHub OIDC.* 57 API integration suites and 380 unit tests gate every deploy, across 48
-forward-only SQL migrations.
+Docker, and GitHub OIDC.* 59 API integration suites and 472 unit tests gate every deploy, across 50
+forward-only SQL migrations. The whole repository is **strict TypeScript** across three separately
+type-checked surfaces at zero errors, with every request body derived from the Zod schema that
+validates it rather than Express's `any`.
 
 *Recent work:* a **GDPR and Irish/EU compliance pass** — ROPA, DPIA, an Article 28 processor agreement
 as a signable document, a data-export button and a legal-hold runbook, plus retention crons that
@@ -77,7 +84,15 @@ grader, then fixed and regression-tested.*
 An Amazon-style commerce engine in an npm-workspaces monorepo: one Express + Prisma API behind a React
 web store and an Expo/React Native app, with a shared Zod-validation and integer-cents money package so
 the clients can't drift from the API. *Demonstrates a transactional, oversell-safe checkout, idempotent
-Stripe webhooks, and refresh-token families with reuse detection.*
+Stripe webhooks, and refresh-token families with reuse detection.* Roughly **580 tests** across four
+workspaces, the API suite running against a real PostgreSQL database because transactions and races
+don't show up against a mock.
+
+*Recent work:* a **strict TypeScript migration** of the shared, API and web workspaces, gated by
+`tsc --noEmit` in CI. The migration is the argument for itself — it surfaced an API **leaking password
+hashes in admin responses** and a pickup-checkout path the API rejected against its own seeded data,
+neither of which the JavaScript build had complained about. Also a dependency pass clearing every high
+advisory, including two `react-router` CVEs.
 **[Read the case study →](https://veritydigital.ie/case-studies/ecommerce-engine)**
 
 ### 🏨 Hotel Management & Booking Platform · *Built · not yet deployed*
@@ -85,6 +100,47 @@ A commission-free direct-booking and hotel-operations platform built on raw para
 *Demonstrates database-level concurrency safety — a PostgreSQL `EXCLUDE` constraint makes overlapping
 bookings physically impossible — plus multi-property RBAC and idempotent Stripe refunds.*
 **[Read the case study →](https://veritydigital.ie/case-studies/hotel-booking-platform)**
+
+### 🟣 GrandStay.NET — the hotel platform, rebuilt in C#/.NET · *Built · not yet deployed*
+A full port of the platform above to **C# and .NET 10** (ASP.NET Core, EF Core, PostgreSQL 18),
+delivered in seven phases across a five-project layered architecture — Domain → Application →
+Infrastructure → PostgreSQL provider → API. *Demonstrates that the engineering transfers across stacks,
+and that layering can be enforced rather than merely intended.*
+
+**The layering is not honour-system.** Architecture tests assert the reference graph and fail CI on
+violation: the Domain project has no dependencies at all, and Npgsql is forbidden outside the provider
+project — because SQL Server is a planned second target and `EXCLUDE USING gist` has no equivalent
+there, so the booking guarantee sits behind an `IBookingConflictGuard` port (ADR-0001).
+
+**The port was proved, not asserted.** The original React client was retained and run **unmodified**
+against the new API — that is the proof the contract is faithful, and it's banked at the tag
+`parity-proof-v1`. A repeatable route-level diff then found **thirteen missing endpoints**, plus a
+fourteenth the diff itself had missed because it lived outside the directory being scanned. *A diff is
+only as complete as the surface it scans* — the method is the lesson, not the route.
+
+*Verified rather than asserted:* the double-booking guarantee holds at **N = 2, 10 and 50** concurrent
+bookings and **under load at N = 200**, losers receiving a clean typed **409, never a 500**, with the
+absence of overlap proved by independent SQL. **Over 1,100 tests** — domain, application, architecture
+and integration — with integration tests against **real PostgreSQL 18 containers** (Testcontainers) in
+CI. And every guard was **checked by removing it and confirming the tests fail** — the advisory lock,
+CSRF middleware, per-request session validation, logout's session revocation. *A guard that has never
+been observed failing is an assumption, not a guarantee.*
+
+The assurance work is written down and deliberately self-critical — a verification report checked
+against the live database, a security-hardening review, a **penetration test** (28 attacks, 71
+confirmed-safe checks each recorded with the predicate that makes it safe), **mutation testing**, a
+committed **OpenAPI spec with a CI drift gate**, a performance report, and a **WCAG 2.2 AA** audit
+enforced by CI across 29 checks over 13 routes. Each records what was *not* checked as well as what was.
+Thirteen ADRs cover the decisions.
+
+*Two findings worth the detour:* load testing exhausted PostgreSQL's connection limit outright
+(`FATAL: sorry, too many clients already`) because Npgsql's default pool of 100 met a `max_connections`
+of 100 — now bounded at 40, answering **`503` with `Retry-After`** rather than a `500`, since
+exhaustion is a capacity signal that clears by itself. And converting the retained client to **strict
+TypeScript** surfaced defects that had been failing *silently*: a checkout that could never complete,
+three admin pages rendering nothing but the error boundary, a property switcher that had never worked,
+and five staff controls posting fields no command declared — discarded by the model binder without an
+error.
 
 ### 📡 Verity Tender Radar — Irish public-procurement radar · **Live**
 Ingests EU and Irish procurement notices from the live TED API, scores each against a capability
@@ -128,7 +184,8 @@ than *breaching*, so a stopped instance would have gone quiet instead of alarmin
 > **Status, stated honestly:** two systems are deployed — Verity Digital at
 > [veritydigital.ie](https://veritydigital.ie), which is public, and Verity Tender Radar at
 > `radar.veritydigital.ie`, which is authenticated with no public sign-up, so there is nothing a
-> visitor can click into. The other three are feature-complete and tested, but not yet publicly hosted.
+> visitor can click into. The other four — JS Academy, the commerce engine, and the hotel platform in
+> both its PERN and .NET forms — are feature-complete and tested, but not yet publicly hosted.
 
 ---
 

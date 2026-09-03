@@ -56,7 +56,7 @@ A production PERN platform combining a public marketing site, an authenticated c
 admin back-office — deployed to AWS via a keyless, gated CI/CD pipeline (Elastic Beanstalk, RDS, S3,
 CloudFront, ECR, CloudWatch, IAM, ACM). *Demonstrates secure-by-design delivery from commit to live
 infrastructure: httpOnly-cookie JWT with refresh-token rotation, TOTP two-factor auth, RBAC, Stripe,
-Docker, and GitHub OIDC.* 59 API integration suites and 472 unit tests gate every deploy, across 50
+Docker, and GitHub OIDC.* 67 API integration suites and 625 unit tests gate every deploy, across 52
 forward-only SQL migrations. The whole repository is **strict TypeScript** across three separately
 type-checked surfaces at zero errors, with every request body derived from the Zod schema that
 validates it rather than Express's `any`.
@@ -84,7 +84,7 @@ grader, then fixed and regression-tested.*
 An Amazon-style commerce engine in an npm-workspaces monorepo: one Express + Prisma API behind a React
 web store and an Expo/React Native app, with a shared Zod-validation and integer-cents money package so
 the clients can't drift from the API. *Demonstrates a transactional, oversell-safe checkout, idempotent
-Stripe webhooks, and refresh-token families with reuse detection.* Roughly **580 tests** across four
+Stripe webhooks, and refresh-token families with reuse detection.* **1,871 tests** across four
 workspaces, the API suite running against a real PostgreSQL database because transactions and races
 don't show up against a mock.
 
@@ -158,8 +158,8 @@ queue with replay, and a GitHub OIDC deploy role scoped so it cannot reach the s
 The scheduled worker is *why* it moved to AWS: `croner` only fires while the process is alive, so a
 laptop shut at 18:00 never runs its 06:00 job.
 
-*Verified rather than asserted:* **1,898 tests** (104 files, 84.71% statement coverage) plus a
-**138-test Playwright suite** driving a real browser, a load pass at **100× a realistic corpus** with
+*Verified rather than asserted:* **1,973 tests** (111 files, 84.71% statement coverage) plus a
+**155-test Playwright suite** driving a real browser, a load pass at **100× a realistic corpus** with
 zero errors at 128 concurrent users, an adversarial security assessment, and a **WCAG 2.2 AA** pass —
 every finding remediated. The AI extraction eval harness caught a **1000× money-parsing defect**
 (€6.5m read as €6.5bn) that was intermittent enough to survive a spot check.

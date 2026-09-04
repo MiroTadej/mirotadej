@@ -120,8 +120,8 @@ only as complete as the surface it scans* — the method is the lesson, not the 
 
 *Verified rather than asserted:* the double-booking guarantee holds at **N = 2, 10 and 50** concurrent
 bookings and **under load at N = 200**, losers receiving a clean typed **409, never a 500**, with the
-absence of overlap proved by independent SQL. **Over 1,100 tests** — domain, application, architecture
-and integration — with integration tests against **real PostgreSQL 18 containers** (Testcontainers) in
+absence of overlap proved by independent SQL. **1,186 tests, 0 failing** — 533 domain, 74 application, 15 architecture
+and 564 integration — the last against **real PostgreSQL 18 containers** (Testcontainers) in
 CI. And every guard was **checked by removing it and confirming the tests fail** — the advisory lock,
 CSRF middleware, per-request session validation, logout's session revocation. *A guard that has never
 been observed failing is an assumption, not a guarantee.*

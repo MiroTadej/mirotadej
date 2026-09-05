@@ -12,6 +12,10 @@ platforms to .NET 10 on ASP.NET Core and EF Core, and proved the port by running
 client against the new API unmodified. I came to software engineering from a prior career in sales
 management and training, and I pair hands-on building with a postgraduate cybersecurity background.
 
+**The habit that runs through all of it: measure, then claim.** Every figure below came from running
+something, and where a fix didn't work I've said so — two performance predictions on the consultancy
+site were measured, found wrong, and recorded as wrong rather than quietly dropped.
+
 **🟢 Open to Full Stack / Software Engineer roles in Ireland.**
 
 ---
@@ -42,21 +46,27 @@ monitoring and alerting · WCAG 2.2 AA accessibility.
 
 ## 🚀 Featured Projects
 
-| Project | Status | Stack | What it proves |
-| --- | --- | --- | --- |
-| **[Verity Digital](https://veritydigital.ie/case-studies/consultancy-platform)** | 🟢 **Live** | PERN · AWS · Docker | Secure delivery from commit to production infrastructure |
-| **[Tender Radar](https://veritydigital.ie/case-studies/tender-radar)** | 🟢 **Live** | PERN · TypeScript · AWS · AI | Measured engineering: load, security and accessibility passes |
-| **[JS Academy](https://veritydigital.ie/case-studies/js-academy)** | Built | PERN · TypeScript · Acorn | Interpreter design and safely running untrusted code |
-| **[Shopora Commerce](https://veritydigital.ie/case-studies/ecommerce-engine)** | Built | Monorepo · Prisma · Expo | One API, two clients, no contract drift |
-| **[Grand Stay Hotel](https://veritydigital.ie/case-studies/hotel-booking-platform)** | Built | PERN · raw SQL | Correctness under concurrency, enforced by the database |
-| **GrandStay.NET** | Built | C# · .NET 10 · EF Core | The same guarantees, rebuilt on a second stack and proved |
+| Project | Status | Stack | What it proves | Tests |
+| --- | --- | --- | --- | --- |
+| **[Verity Digital](https://veritydigital.ie/case-studies/consultancy-platform)** | 🟢 **Live** | PERN · AWS · Docker | Secure delivery from commit to production infrastructure | 783 unit |
+| **[Tender Radar](https://veritydigital.ie/case-studies/tender-radar)** | 🟢 **Live** | PERN · TypeScript · AWS · AI | Measured engineering: load, security and accessibility passes | 1,973 + 156 e2e |
+| **[GrandStay.NET](https://veritydigital.ie/case-studies/grandstay-dotnet)** | Built | C# · .NET 10 · EF Core | The same guarantees, rebuilt on a second stack and proved | 1,186 |
+| **[Shopora Commerce](https://veritydigital.ie/case-studies/ecommerce-engine)** | Built | Monorepo · Prisma · Expo | One API, two clients, no contract drift | 1,871 |
+| **[JS Academy](https://veritydigital.ie/case-studies/js-academy)** | Built | PERN · TypeScript · Acorn | Interpreter design and safely running untrusted code | 1,132 |
+| **[Grand Stay Hotel](https://veritydigital.ie/case-studies/hotel-booking-platform)** | Built | PERN · raw SQL | Correctness under concurrency, enforced by the database | 433 server |
+
+<sub>Every case study above is published and live. Test counts were re-verified by running each suite
+on 5 September 2026 — not copied from documentation, which is exactly how they go stale.</sub>
 
 ### 🔐 [Verity Digital — Consultancy Platform](https://veritydigital.ie) · **Live**
+
+[![Verity Digital — the live consultancy platform home page](https://raw.githubusercontent.com/MiroTadej/mirotadej/main/screenshots/verity-digital.webp)](https://veritydigital.ie)
+
 A production PERN platform combining a public marketing site, an authenticated client portal, and an
 admin back-office — deployed to AWS via a keyless, gated CI/CD pipeline (Elastic Beanstalk, RDS, S3,
 CloudFront, ECR, CloudWatch, IAM, ACM). *Demonstrates secure-by-design delivery from commit to live
 infrastructure: httpOnly-cookie JWT with refresh-token rotation, TOTP two-factor auth, RBAC, Stripe,
-Docker, and GitHub OIDC.* 67 API integration suites and 625 unit tests gate every deploy, across 52
+Docker, and GitHub OIDC.* 783 unit tests and 67 integration suites gate every deploy, across 52
 forward-only SQL migrations. The whole repository is **strict TypeScript** across three separately
 type-checked surfaces at zero errors, with every request body derived from the Zod schema that
 validates it rather than Express's `any`.
@@ -70,38 +80,100 @@ drill and absent penetration test are stated as gaps rather than glossed. Produc
 CloudWatch monitoring**, so a failure is not discovered by a client; a **Content-Security-Policy** on
 production HTML; **CloudFront origin verification**; and an accessibility fix where ten public pages
 had no `h1` at all.
+
+*A measured performance pass, including the parts that failed.* The critical bundle came down **39%**
+(295 KB → 179 KB gzipped, the entry chunk down 64%), now guarded by a build-time budget that fails the
+build rather than a note asking someone to remember. Lighthouse on mobile: the home page **81 → 94**,
+`/solutions` **62 → 94** with **CLS 0.551 → 0.008**, and blocking time to **0 ms** on both. Build-time
+prerendering of 36 routes renders the real React tree in Node and refuses to emit a page missing its
+`<h1>` — a silently un-prerendered route is a regression no test would catch.
+
+Two of the fixes in that pass **did not work, and are written up as failures.** Preloading the
+dossier's lead image left LCP unchanged across two measurements; profiling then showed the real LCP
+element was a paragraph of text, with no resource to preload — the fix had been built on a guess. The
+prerender, predicted to cut First Contentful Paint, moved it **not at all** (2.4 s before and after),
+though it did take blocking time to zero, which is a different and real win. Both are recorded in the
+repo's own baseline document, because a performance note that only lists successes teaches nobody
+which lever actually moved.
 **[Read the case study →](https://veritydigital.ie/case-studies/consultancy-platform)**
 
-### 🧠 JS Academy — JavaScript learning platform · *Built · not yet deployed*
+### 🧠 JS Academy — JavaScript learning platform · *Built · runs locally by design*
+
+![JS Academy's execution visualiser stepping through a closure — synchronised call stack, scopes, heap and step log](https://raw.githubusercontent.com/MiroTadej/mirotadej/main/screenshots/js-academy.webp)
+
 A learning platform built around a custom **generator-based execution visualiser** (call stack,
 scopes/closures, heap, and a data-structures view with a live complexity meter) on the Acorn parser,
 plus a tiered curriculum and an AI-powered interview coach. *Demonstrates language tooling, interpreter
 design, and sandboxed code execution — including a critical sandbox escape I found by attacking my own
-grader, then fixed and regression-tested.*
+grader, then fixed and regression-tested.* **1,132 tests across 116 files**; the 301 server tests run
+against a real migrated and seeded PostgreSQL, so they exercise genuine route → controller → service →
+repository paths rather than mocks.
+
+*Recent work:* a **typing pass over the server** that took `any` in application code from 150 to one
+real remaining case. Database row types are **generated from the live schema** and drift-gated by a
+test that re-derives them and fails if the checked-in copy is stale — so the types cannot quietly
+disagree with the database. Enabling `strict` after `noImplicitAny` added **zero** new errors, which
+was the point: the annotations described real runtime guards instead of casting past them.
+
+*The refactor paid for itself immediately.* It surfaced a bug where learners setting an unrealistic
+study plan were told *"about NaNh of lessons remain"*. Two return shapes named the same quantity
+differently and the caller read only one of them; TypeScript had not caught it because the shapes never
+formed a discriminated union. The **existing test asserted on `/not realistic/i`, which the `NaN`
+string satisfied perfectly happily** — a test can pass and still be watching the wrong thing.
 **[Read the case study →](https://veritydigital.ie/case-studies/js-academy)**
 
 ### 🛒 E-commerce Platform — web + mobile + shared core
+
+![Shopora's product detail page in the React web store](https://raw.githubusercontent.com/MiroTadej/mirotadej/main/screenshots/ecommerce.webp)
+
 An Amazon-style commerce engine in an npm-workspaces monorepo: one Express + Prisma API behind a React
 web store and an Expo/React Native app, with a shared Zod-validation and integer-cents money package so
 the clients can't drift from the API. *Demonstrates a transactional, oversell-safe checkout, idempotent
 Stripe webhooks, and refresh-token families with reuse detection.* **1,871 tests** across four
-workspaces, the API suite running against a real PostgreSQL database because transactions and races
-don't show up against a mock.
+workspaces (916 API, 604 mobile, 252 web at 94.79% statement coverage, 99 shared), the API suite
+running against a real PostgreSQL database because transactions and races don't show up against a mock.
 
 *Recent work:* a **strict TypeScript migration** of the shared, API and web workspaces, gated by
 `tsc --noEmit` in CI. The migration is the argument for itself — it surfaced an API **leaking password
 hashes in admin responses** and a pickup-checkout path the API rejected against its own seeded data,
 neither of which the JavaScript build had complained about. Also a dependency pass clearing every high
 advisory, including two `react-router` CVEs.
+
+*A design-system drift audit, where the diagnosis was the useful part.* 43 of 105 buttons had bypassed
+the system, and ten were bare text links — several of them triggering destructive actions like
+approving a refund, below the WCAG 2.5.8 target-size floor. Both findings had the same root cause:
+**where the system has no token for a job, every call site invents one.** So the fix was to add what
+was missing (a low-emphasis button variant, list-shaped loading skeletons) rather than to police the
+call sites. Contrast was measured rather than assumed and improved on the way, 5.17:1 → 6.70:1. Three
+sites were deliberately left alone — they are real navigation, and a link styled as a button is the
+same category error in reverse.
+
+*Closing a hole without opening an oracle.* Tightening guest-order access left guests who had lost
+their emailed link with no way back in, so I added a re-send endpoint — one that **always answers 200**,
+whether the address is unknown, the order does not exist, or it belongs to a registered account.
+Returning a helpful 404 would have turned it into an account-enumeration oracle, so the rate limiter
+does the work the status code deliberately refuses to. The token is rotated rather than recovered,
+since only its hash is stored. Thirteen tests, and the guards were **probe-verified**: five mutations,
+two killed, and the three survivors proven equivalent rather than assumed to be.
 **[Read the case study →](https://veritydigital.ie/case-studies/ecommerce-engine)**
 
 ### 🏨 Hotel Management & Booking Platform · *Built · not yet deployed*
+
+![The hotel platform's admin overview — occupancy, arrivals and revenue at a glance](https://raw.githubusercontent.com/MiroTadej/mirotadej/main/screenshots/hotel-pern.webp)
+
 A commission-free direct-booking and hotel-operations platform built on raw parameterised SQL.
 *Demonstrates database-level concurrency safety — a PostgreSQL `EXCLUDE` constraint makes overlapping
 bookings physically impossible — plus multi-property RBAC and idempotent Stripe refunds.*
 **[Read the case study →](https://veritydigital.ie/case-studies/hotel-booking-platform)**
 
 ### 🟣 GrandStay.NET — the hotel platform, rebuilt in C#/.NET · *Built · not yet deployed*
+
+![GrandStay.NET's admin overview — the same screen as above, served by the .NET API to the original React client](https://raw.githubusercontent.com/MiroTadej/mirotadej/main/screenshots/grandstay-dotnet.webp)
+
+<sub>Deliberately the same screen as the platform above — it is the *same React client*, unmodified,
+talking to the .NET API instead of the Express one. That the screenshots are hard to tell apart is the
+proof the port is faithful.</sub>
+
 A full port of the platform above to **C# and .NET 10** (ASP.NET Core, EF Core, PostgreSQL 18),
 delivered in seven phases across a five-project layered architecture — Domain → Application →
 Infrastructure → PostgreSQL provider → API. *Demonstrates that the engineering transfers across stacks,
@@ -159,7 +231,7 @@ The scheduled worker is *why* it moved to AWS: `croner` only fires while the pro
 laptop shut at 18:00 never runs its 06:00 job.
 
 *Verified rather than asserted:* **1,973 tests** (111 files, 84.71% statement coverage) plus a
-**155-test Playwright suite** driving a real browser, a load pass at **100× a realistic corpus** with
+**156-test Playwright suite** driving a real browser, a load pass at **100× a realistic corpus** with
 zero errors at 128 concurrent users, an adversarial security assessment, and a **WCAG 2.2 AA** pass —
 every finding remediated. The AI extraction eval harness caught a **1000× money-parsing defect**
 (€6.5m read as €6.5bn) that was intermittent enough to survive a spot check.
@@ -172,7 +244,7 @@ finding that CloudFront's SPA rewrite was turning a missing `/health/ready` into
 reported "up" forever; and a corrected RDS storage alarm that treated missing data as *missing* rather
 than *breaching*, so a stopped instance would have gone quiet instead of alarming.
 
-![Verity Tender Radar](https://raw.githubusercontent.com/MiroTadej/mirotadej/main/screenshots/tender-radar.png)
+![Verity Tender Radar's main screen — scored procurement notices, each with the reason it surfaced](https://raw.githubusercontent.com/MiroTadej/mirotadej/main/screenshots/tender-radar.webp)
 
 **[Read the case study →](https://veritydigital.ie/case-studies/tender-radar)**
 

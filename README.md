@@ -25,13 +25,11 @@ Verity Digital is my sole-trader business. No client engagements have been deliv
 | **TS Academy** | Built · runs locally by design | TypeScript learning platform with an in-browser Type Explorer that runs the real TypeScript compiler to show inferred types and narrowing. |
 | [**JS Academy**](https://veritydigital.ie/case-studies/js-academy) | Built · runs locally by design | JavaScript learning platform built around a custom step-through visualiser showing the call stack, closures, heap and a complexity meter. |
 
-[![Verity Tender Radar: scored procurement notices, each with the reason it surfaced](https://raw.githubusercontent.com/MiroTadej/mirotadej/main/screenshots/tender-radar.webp)](https://veritydigital.ie/case-studies/tender-radar)
-
-[![Verity Digital: the live business platform home page](https://raw.githubusercontent.com/MiroTadej/mirotadej/main/screenshots/verity-digital.webp)](https://veritydigital.ie/case-studies/consultancy-platform)
-
-[![GrandStay.NET: the admin overview, served by the .NET API to the original React client](https://raw.githubusercontent.com/MiroTadej/mirotadej/main/screenshots/grandstay-dotnet.webp)](https://veritydigital.ie/case-studies/grandstay-dotnet)
-
-![TS Academy: the Type Explorer showing narrowing, read from the real TypeScript compiler](https://raw.githubusercontent.com/MiroTadej/mirotadej/main/screenshots/ts-academy.webp)
+<table>
+<tr><td width="50%" valign="top"><a href="https://veritydigital.ie/case-studies/tender-radar"><img src="https://raw.githubusercontent.com/MiroTadej/mirotadej/main/screenshots/tender-radar.webp" alt="Verity Tender Radar: scored procurement notices, each with the reason it surfaced" width="100%"></a><br><sub><b>Verity Tender Radar · live</b></sub></td><td width="50%" valign="top"><a href="https://veritydigital.ie/case-studies/consultancy-platform"><img src="https://raw.githubusercontent.com/MiroTadej/mirotadej/main/screenshots/verity-digital.webp" alt="Verity Digital: the live business platform home page" width="100%"></a><br><sub><b>Verity Digital · live</b></sub></td></tr>
+<tr><td width="50%" valign="top"><a href="https://veritydigital.ie/case-studies/grandstay-dotnet"><img src="https://raw.githubusercontent.com/MiroTadej/mirotadej/main/screenshots/grandstay-dotnet.webp" alt="GrandStay.NET: the admin overview, served by the .NET API to the original React client" width="100%"></a><br><sub><b>GrandStay.NET · C# port</b></sub></td><td width="50%" valign="top"><a href="https://veritydigital.ie/case-studies/hotel-booking-platform"><img src="https://raw.githubusercontent.com/MiroTadej/mirotadej/main/screenshots/grand-stay-pern.webp" alt="Grand Stay (PERN): the admin occupancy board with room grid and room detail" width="100%"></a><br><sub><b>Grand Stay (PERN) · occupancy board</b></sub></td></tr>
+<tr><td width="50%" valign="top"><img src="https://raw.githubusercontent.com/MiroTadej/mirotadej/main/screenshots/ts-academy.webp" alt="TS Academy: the Type Explorer showing narrowing, read from the real TypeScript compiler" width="100%"><br><sub><b>TS Academy · Type Explorer</b></sub></td><td width="50%"></td></tr>
+</table>
 
 ---
 
